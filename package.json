@@ -1,0 +1,31 @@
+{
+  "name": "vit-renderer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec ts-node src/index.ts",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Renegade1912/vit-tag-renderer.git"
+  },
+  "author": "Marco Sendner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Renegade1912/vit-tag-renderer/issues"
+  },
+  "homepage": "https://github.com/Renegade1912/vit-tag-renderer#readme",
+  "description": "",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "fastify": "^4.27.0",
+    "fastify-zod": "^1.4.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
