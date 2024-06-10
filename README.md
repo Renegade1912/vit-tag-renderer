@@ -1,3 +1,3 @@
-# VIT Rooms Tag Renderer
+# VIT Tag Renderer
 
 Related to the Meet & Code Barcamp
