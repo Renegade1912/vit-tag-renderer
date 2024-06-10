@@ -75,5 +75,7 @@ export async function renderSchedule(
   }
 
   // Return the buffer
-  return canvas.toBuffer();
+  return canvas.toBuffer("image/jpeg", {
+    quality: 1,
+  });
 }
