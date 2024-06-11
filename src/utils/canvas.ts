@@ -4,6 +4,7 @@ export async function renderSchedule(
   name: string,
   height: number,
   width: number,
+  date: string,
   events: { desc: string; start: string; end: string }[]
 ) {
   // Build the canvas for rendering
@@ -36,15 +37,10 @@ export async function renderSchedule(
   let ypos = row * lineHeight;
   ctx.fillText(name, 10, ypos - (lineHeight - fontSize) / 2);
 
-  // Draw the current date dd.mm.yyyy at the end of the header (fill up day and month with 0 if < 10)
-  const date = new Date();
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear();
-  const dateString = `${day}.${month}.${year}`;
-  const textWidth = ctx.measureText(dateString).width;
+  // Draw the date at the end of the header
+  const textWidth = ctx.measureText(date).width;
   ctx.fillText(
-    dateString,
+    date,
     width - textWidth - 10,
     ypos - (lineHeight - fontSize) / 2
   );

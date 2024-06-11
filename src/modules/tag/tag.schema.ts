@@ -6,6 +6,10 @@ const renderTagScheduleSchema = z.object({
     required_error: "Name wird benötigt",
     invalid_type_error: "Name muss ein String sein",
   }),
+  date: z.string({
+    required_error: "Datum wird benötigt",
+    invalid_type_error: "Datum muss ein String sein",
+  }),
   height: z.coerce.number(
     z
       .string({
