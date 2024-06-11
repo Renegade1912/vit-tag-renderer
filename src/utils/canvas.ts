@@ -58,9 +58,11 @@ export async function renderSchedule(
       10,
       ypos - (lineHeight - fontSize) / 2
     );
+    const seperatorWidth =
+      width * 0.025 > 25 ? Math.min(width * 0.025, 50) : 25;
     ctx.fillText(
       event.desc,
-      textWidth + 25,
+      textWidth + seperatorWidth,
       ypos - (lineHeight - fontSize) / 2
     );
 
