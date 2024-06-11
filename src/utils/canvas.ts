@@ -80,9 +80,10 @@ function renderHeader(
  */
 export async function renderSchedule(
   name: string,
+  date: string,
+  url: string,
   height: number,
   width: number,
-  date: string,
   events: { desc: string; start: string; end: string }[]
 ): Promise<Buffer> {
   // Build the canvas for rendering
@@ -97,6 +98,20 @@ export async function renderSchedule(
   // Draw header
   renderHeader(ctx, name, date);
 
+  // Generate the QR Code
+  const qrCode = await QRCode.toDataURL(url);
+
+  // Draw the QR Code in the bottom right corner
+  const qrCodeImage = new Image();
+  qrCodeImage.src = qrCode;
+  ctx.drawImage(
+    qrCodeImage,
+    width - lineHeight * 2,
+    height - lineHeight * 2,
+    lineHeight * 2,
+    lineHeight * 2
+  );
+
   let row = 1;
   let ypos;
   const seperatorWidth = width * 0.025 > 25 ? Math.min(width * 0.025, 50) : 25;
@@ -107,6 +122,11 @@ export async function renderSchedule(
   ctx.font = `normal ${fontSize}px Arial`;
   for (const event of events) {
     ypos = ++row * lineHeight;
+
+    // Break if row is out of bounds (line 8) to prevent overflow qr code
+    if (ypos > height - lineHeight * 2) {
+      break;
+    }
 
     // Time
     ctx.fillText(

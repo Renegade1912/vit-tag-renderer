@@ -16,11 +16,18 @@ export async function registerRenderTagScheduleHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { name, date, height, width, events } = request.body;
+  const { name, date, url, height, width, events } = request.body;
 
   try {
     // Render the schedule
-    const imgBuffer = await renderSchedule(name, height, width, date, events);
+    const imgBuffer = await renderSchedule(
+      name,
+      date,
+      url,
+      height,
+      width,
+      events
+    );
 
     reply.header("Content-Type", "image/jpeg").code(201).send(imgBuffer);
   } catch (error) {

@@ -28,6 +28,12 @@ const renderTagScheduleSchema = z.object({
     required_error: "Datum wird benötigt",
     invalid_type_error: "Datum muss ein String sein",
   }),
+  url: z
+    .string({
+      required_error: "Sie müssen eine URL angeben",
+      invalid_type_error: "Die URL ist ungültig",
+    })
+    .url("Die URL ist ungültig"),
   events: z.array(
     z.object({
       desc: z.string({
