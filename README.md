@@ -31,3 +31,43 @@ npm run build
 # run 
 npm run start
 ```
+
+
+## Example
+### Request
+
+```javascript
+curl --location 'localhost:3001/api/tag/schedule' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "Lehrsaal 2",
+    "width": "640",
+    "height": "384",
+    "date": "11.06.2024",
+    "events": [
+        {
+            "desc": "M10 - Prüfungsleistung",
+            "start": "08:00",
+            "end": "09:35"
+        },
+        {
+            "desc": "M10 - Prüfungsleistung",
+            "start": "09:50",
+            "end": "11:25"
+        },
+        {
+            "desc": "M10 - Prüfungsleistung",
+            "start": "11:40",
+            "end": "13:15"
+        },
+        {
+            "desc": "M10 - Party nach Abgabe",
+            "start": "14:30",
+            "end": "16:05"
+        }
+    ]
+}'
+```
+
+### Result: 
+![Image Response Sample](./img/sample_response.jpeg)
