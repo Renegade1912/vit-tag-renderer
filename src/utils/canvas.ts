@@ -99,29 +99,30 @@ export async function renderSchedule(
 
   let row = 1;
   let ypos;
+  const seperatorWidth = width * 0.025 > 25 ? Math.min(width * 0.025, 50) : 25;
+  const textWidth = ctx.measureText("00:00 - 00:00").width;
 
   // Draw the events
   ctx.fillStyle = "rgba(0, 0, 0, 1)";
   ctx.font = `normal ${fontSize}px Arial`;
   for (const event of events) {
     ypos = ++row * lineHeight;
-    const textWidth = ctx.measureText(`${event.start}-${event.end}`).width;
 
-    // Text
+    // Time
     ctx.fillText(
-      `${event.start}-${event.end}`,
+      `${event.start} - ${event.end}`,
       10,
       ypos - (lineHeight - fontSize) / 2
     );
-    const seperatorWidth =
-      width * 0.025 > 25 ? Math.min(width * 0.025, 50) : 25;
+
+    // Description
     ctx.fillText(
       event.desc,
       textWidth + seperatorWidth,
       ypos - (lineHeight - fontSize) / 2
     );
 
-    // Line
+    // Bottom line
     ctx.beginPath();
     ctx.moveTo(0, ypos);
     ctx.lineTo(width, ypos);
