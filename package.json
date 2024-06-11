@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Renegade1912/vit-tag-renderer#readme",
   "description": "",
   "dependencies": {
+    "@fastify/formbody": "^7.4.0",
     "ajv-errors": "^3.0.0",
     "canvas": "^2.11.2",
     "dotenv": "^16.4.5",

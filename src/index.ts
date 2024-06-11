@@ -1,6 +1,7 @@
 import "dotenv/config";
 
 import Fastify from "fastify";
+import fastifyFormbody from "@fastify/formbody";
 import tagRoutes from "./modules/tag/tag.route";
 import { TagSchemas } from "./modules/tag/tag.schema";
 
@@ -13,6 +14,8 @@ const server = Fastify({
     plugins: [require("ajv-errors")],
   },
 });
+
+server.register(fastifyFormbody);
 
 const port: number = parseInt(process.env.PORT ?? "3001");
 
