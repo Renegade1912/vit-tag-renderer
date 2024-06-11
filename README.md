@@ -11,7 +11,6 @@ Small Fastify Server to generate schedule images for OpenEPaperLink tags.
 1. Clone the repository.
 2. Setup your `.env` file based on the provided `.env.example`.
 3. Run `npm install`.
-4. Run `npm run dev`.
 
 ## Development Server
 Start the development server on `http://localhost:3001` (.env PORT - default 3001):
