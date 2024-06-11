@@ -16,7 +16,7 @@ Small Fastify Server to generate schedule images for OpenEPaperLink tags.
 Start the development server on `http://localhost:3001` (.env PORT - default 3001):
 
 ```bash
-# npm
+# dev
 npm run dev
 ```
 
@@ -27,7 +27,7 @@ Build and run the application for/in production:
 # build
 npm run build
 
-# run 
+# start 
 npm run start
 ```
 
