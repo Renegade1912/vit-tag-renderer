@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 import {
   registerRenderEmergencyTagHandler,
+  registerRenderNotConfiguredTagHandler,
   registerRenderTagScheduleHandler,
 } from "./tag.controller";
 import { $ref } from "./tag.schema";
@@ -24,6 +25,16 @@ async function tagRoutes(server: FastifyInstance) {
       },
     },
     registerRenderEmergencyTagHandler
+  );
+
+  server.post(
+    "/configure",
+    {
+      schema: {
+        body: $ref("renderNotConfiguredTagSchema"),
+      },
+    },
+    registerRenderNotConfiguredTagHandler
   );
 }
 

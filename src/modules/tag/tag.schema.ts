@@ -1,15 +1,7 @@
 import { buildJsonSchemas } from "fastify-zod";
 import z from "zod";
 
-const renderTagScheduleSchema = z.object({
-  name: z.string({
-    required_error: "Name wird benötigt",
-    invalid_type_error: "Name muss ein String sein",
-  }),
-  date: z.string({
-    required_error: "Datum wird benötigt",
-    invalid_type_error: "Datum muss ein String sein",
-  }),
+const tagCore = {
   height: z.coerce
     .number({
       required_error: "Höhe wird benötigt",
@@ -24,6 +16,18 @@ const renderTagScheduleSchema = z.object({
     })
     .min(1, "Breite muss eine positive Zahl größer 0 sein")
     .max(4096, "Breite muss eine positive Zahl kleiner 4096 sein"),
+};
+
+const renderTagScheduleSchema = z.object({
+  ...tagCore,
+  name: z.string({
+    required_error: "Name wird benötigt",
+    invalid_type_error: "Name muss ein String sein",
+  }),
+  date: z.string({
+    required_error: "Datum wird benötigt",
+    invalid_type_error: "Datum muss ein String sein",
+  }),
   events: z.array(
     z.object({
       desc: z.string({
@@ -49,28 +53,29 @@ const renderTagScheduleSchema = z.object({
 });
 
 const renderEmergencyTagSchema = z.object({
-  height: z.coerce
-    .number({
-      required_error: "Höhe wird benötigt",
-      invalid_type_error: "Höhe muss eine Zahl sein",
+  ...tagCore,
+});
+
+const renderNotConfiguredTagSchema = z.object({
+  ...tagCore,
+  url: z
+    .string({
+      required_error: "Sie müssen eine URL angeben",
+      invalid_type_error: "Die URL ist ungültig",
     })
-    .min(1, "Höhe muss eine positive Zahl größer 0 sein")
-    .max(2048, "Höhe muss eine positive Zahl kleiner 2048 sein"),
-  width: z.coerce
-    .number({
-      required_error: "Breite wird benötigt",
-      invalid_type_error: "Breite muss eine Zahl sein",
-    })
-    .min(1, "Breite muss eine positive Zahl größer 0 sein")
-    .max(4096, "Breite muss eine positive Zahl kleiner 4096 sein"),
+    .url("Die URL ist ungültig"),
 });
 
 export type RenderTagScheduleBody = z.infer<typeof renderTagScheduleSchema>;
 export type RenderEmergencyTagBody = z.infer<typeof renderEmergencyTagSchema>;
+export type RenderNotConfiguredTagBody = z.infer<
+  typeof renderNotConfiguredTagSchema
+>;
 
 const models = {
   renderTagScheduleSchema,
   renderEmergencyTagSchema,
+  renderNotConfiguredTagSchema,
 };
 
 export const { schemas: TagSchemas, $ref } = buildJsonSchemas(models, {

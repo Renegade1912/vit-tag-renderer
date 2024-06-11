@@ -1,12 +1,12 @@
-import { createCanvas } from "canvas";
+import {
+  Image,
+  createCanvas,
+  type Canvas,
+  type CanvasRenderingContext2D,
+} from "canvas";
+import QRCode from "qrcode";
 
-export async function renderSchedule(
-  name: string,
-  height: number,
-  width: number,
-  date: string,
-  events: { desc: string; start: string; end: string }[]
-) {
+function setupCanvas(width: number, height: number, color: string): Canvas {
   // Build the canvas for rendering
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext("2d");
@@ -14,13 +14,21 @@ export async function renderSchedule(
   // Disable antialiasing - tags cant handle it
   ctx.antialias = "none";
 
-  // Set the background color to white
-  ctx.fillStyle = "rgba(255, 255, 255, 1)";
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  // Header
+  return canvas;
+}
+
+function renderHeader(
+  ctx: CanvasRenderingContext2D,
+  name: string,
+  date: string
+) {
+  // Get the width of the canvas
+  const width = ctx.canvas.width;
   // Calculate the line height based on the height of the tag
-  const lineHeight = height / 10;
+  const lineHeight = ctx.canvas.height / 10;
   // Calculate the font size based on the height of the tag
   const fontSize = lineHeight * 0.5;
 
@@ -33,8 +41,7 @@ export async function renderSchedule(
   ctx.font = `bold ${fontSize}px Arial`;
 
   // Draw the name of the schedule at the beginning of the header
-  let row = 1;
-  let ypos = row * lineHeight;
+  let ypos = lineHeight;
   ctx.fillText(name, 10, ypos - (lineHeight - fontSize) / 2);
 
   // Draw the date at the end of the header
@@ -44,6 +51,29 @@ export async function renderSchedule(
     width - textWidth - 10,
     ypos - (lineHeight - fontSize) / 2
   );
+}
+
+export async function renderSchedule(
+  name: string,
+  height: number,
+  width: number,
+  date: string,
+  events: { desc: string; start: string; end: string }[]
+) {
+  // Build the canvas for rendering
+  const canvas = setupCanvas(width, height, "rgba(255, 255, 255, 1)");
+  const ctx = canvas.getContext("2d");
+
+  // Calculate the line height based on the height of the tag
+  const lineHeight = height / 10;
+  // Calculate the font size based on the height of the tag
+  const fontSize = lineHeight * 0.5;
+
+  // Draw header
+  renderHeader(ctx, name, date);
+
+  let row = 1;
+  let ypos;
 
   // Draw the events
   ctx.fillStyle = "rgba(0, 0, 0, 1)";
@@ -79,17 +109,53 @@ export async function renderSchedule(
   });
 }
 
-export async function renderEmergencyTag(height: number, width: number) {
+export async function renderNotConfiguredTag(
+  height: number,
+  width: number,
+  url: string
+) {
   // Build the canvas for rendering
-  const canvas = createCanvas(width, height);
+  const canvas = setupCanvas(width, height, "rgba(255, 255, 255, 1)");
   const ctx = canvas.getContext("2d");
 
-  // Disable antialiasing - tags cant handle it
-  ctx.antialias = "none";
+  // Render the header
+  renderHeader(ctx, "Kein Raum zugewiesen", "");
 
-  // Set the background color to red
-  ctx.fillStyle = "rgba(255, 0, 0, 1)";
-  ctx.fillRect(0, 0, width, height);
+  // Calculate the line height based on the height of the tag
+  const lineHeight = height / 10;
+  // Calculate the font size based on the height of the tag
+  const fontSize = lineHeight * 0.5;
+
+  // Write "Jetzt konfigurieren" in the top center of the tag (after header)
+  ctx.textAlign = "center";
+  ctx.fillStyle = "rgba(0, 0, 0, 1)";
+  ctx.font = `normal ${fontSize}px Arial`;
+  ctx.fillText("Jetzt konfigurieren", width / 2, lineHeight * 2.5);
+
+  // Generate the QR Code
+  const qrCode = await QRCode.toDataURL(url);
+
+  // Draw the QR Code under the text
+  const qrCodeImage = new Image();
+  qrCodeImage.src = qrCode;
+  ctx.drawImage(
+    qrCodeImage,
+    width * 0.35,
+    lineHeight * 3,
+    width * 0.3,
+    width * 0.3
+  );
+
+  // Return the buffer
+  return canvas.toBuffer("image/jpeg", {
+    quality: 1,
+  });
+}
+
+export async function renderEmergencyTag(height: number, width: number) {
+  // Build the canvas for rendering
+  const canvas = setupCanvas(width, height, "rgba(255, 0, 0, 1)");
+  const ctx = canvas.getContext("2d");
 
   // Draw Triangle with only borders inside into the center of the tag, leaving 20% on width and 20% on height
   ctx.beginPath();
@@ -101,19 +167,19 @@ export async function renderEmergencyTag(height: number, width: number) {
   ctx.lineWidth = width * 0.05 > 10 ? Math.min(width * 0.05, 10) : 5;
   ctx.stroke();
 
-  // Draw a exclamtion mark in the center of the triangle
+  // Draw exclamation mark line
   ctx.moveTo(width / 2, height * 0.4);
   ctx.lineTo(width / 2, height * 0.6);
-  ctx.moveTo(width / 2, height * 0.7);
   ctx.lineWidth = width * 0.05 > 10 ? Math.min(width * 0.05, 15) : 10;
   ctx.stroke();
-  ctx.arc(width / 2, height * 0.7, 5, 0, Math.PI * 2);
 
-  // calc line width based on the width of the tag
+  // Draw exclamation mark dot
+  ctx.moveTo(width / 2, height * 0.7);
+  ctx.arc(width / 2, height * 0.7, 5, 0, Math.PI * 2);
   ctx.lineWidth = width * 0.05 > 10 ? Math.min(width * 0.05, 10) : 5;
   ctx.stroke();
 
-  // Move the context to the horizontal center and 5% from the top of the tag
+  // Move the context to the horizontal center and top of the tag
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   ctx.fillStyle = "rgba(255, 255, 255, 1)";
