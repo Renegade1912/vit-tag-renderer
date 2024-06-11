@@ -6,6 +6,14 @@ import {
 } from "canvas";
 import QRCode from "qrcode";
 
+/**
+ * Creates and configures a canvas for rendering.
+ *
+ * @param width - The width of the canvas.
+ * @param height - The height of the canvas.
+ * @param color - The background color of the canvas.
+ * @returns The created canvas.
+ */
 function setupCanvas(width: number, height: number, color: string): Canvas {
   // Build the canvas for rendering
   const canvas = createCanvas(width, height);
@@ -20,10 +28,17 @@ function setupCanvas(width: number, height: number, color: string): Canvas {
   return canvas;
 }
 
+/**
+ * Renders a header on the canvas with the specified left and right text.
+ *
+ * @param ctx - The canvas rendering context.
+ * @param left - The text to be displayed on the left side of the header.
+ * @param right - The text to be displayed on the right side of the header.
+ */
 function renderHeader(
   ctx: CanvasRenderingContext2D,
-  name: string,
-  date: string
+  left: string,
+  right: string
 ) {
   // Get the width of the canvas
   const width = ctx.canvas.width;
@@ -40,26 +55,36 @@ function renderHeader(
   ctx.fillStyle = "rgba(255, 255, 255, 1)";
   ctx.font = `bold ${fontSize}px Arial`;
 
-  // Draw the name of the schedule at the beginning of the header
+  // Draw left at the beginning of the header
   let ypos = lineHeight;
-  ctx.fillText(name, 10, ypos - (lineHeight - fontSize) / 2);
+  ctx.fillText(left, 10, ypos - (lineHeight - fontSize) / 2);
 
-  // Draw the date at the end of the header
-  const textWidth = ctx.measureText(date).width;
+  // Draw right at the end of the header
+  const textWidth = ctx.measureText(right).width;
   ctx.fillText(
-    date,
+    right,
     width - textWidth - 10,
     ypos - (lineHeight - fontSize) / 2
   );
 }
 
+/**
+ * Renders a schedule on a canvas.
+ *
+ * @param name - The name of the schedule.
+ * @param height - The height of the canvas.
+ * @param width - The width of the canvas.
+ * @param date - The date of the schedule.
+ * @param events - An array of events with their descriptions, start times, and end times.
+ * @returns A Promise that resolves to the rendered schedule as a buffer.
+ */
 export async function renderSchedule(
   name: string,
   height: number,
   width: number,
   date: string,
   events: { desc: string; start: string; end: string }[]
-) {
+): Promise<Buffer> {
   // Build the canvas for rendering
   const canvas = setupCanvas(width, height, "rgba(255, 255, 255, 1)");
   const ctx = canvas.getContext("2d");
@@ -109,11 +134,19 @@ export async function renderSchedule(
   });
 }
 
+/**
+ * Renders a "Not Configured" tag with a QR code.
+ *
+ * @param height - The height of the tag.
+ * @param width - The width of the tag.
+ * @param url - The URL for the QR code.
+ * @returns A Promise that resolves to a Buffer containing the rendered image.
+ */
 export async function renderNotConfiguredTag(
   height: number,
   width: number,
   url: string
-) {
+): Promise<Buffer> {
   // Build the canvas for rendering
   const canvas = setupCanvas(width, height, "rgba(255, 255, 255, 1)");
   const ctx = canvas.getContext("2d");
@@ -152,7 +185,17 @@ export async function renderNotConfiguredTag(
   });
 }
 
-export async function renderEmergencyTag(height: number, width: number) {
+/**
+ * Renders an emergency tag with an exclamation mark and text on a canvas.
+ *
+ * @param height - The height of the canvas.
+ * @param width - The width of the canvas.
+ * @returns A Promise that resolves to a Buffer containing the rendered image.
+ */
+export async function renderEmergencyTag(
+  height: number,
+  width: number
+): Promise<Buffer> {
   // Build the canvas for rendering
   const canvas = setupCanvas(width, height, "rgba(255, 0, 0, 1)");
   const ctx = canvas.getContext("2d");
