@@ -5,7 +5,7 @@ import tagRoutes from "./modules/tag/tag.route";
 import { TagSchemas } from "./modules/tag/tag.schema";
 
 const server = Fastify({
-  logger: true,
+  logger: process.env.NODE_ENV === "production" ? false : true,
   ajv: {
     customOptions: {
       allErrors: true,
