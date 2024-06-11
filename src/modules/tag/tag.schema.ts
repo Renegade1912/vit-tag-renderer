@@ -10,22 +10,20 @@ const renderTagScheduleSchema = z.object({
     required_error: "Datum wird benötigt",
     invalid_type_error: "Datum muss ein String sein",
   }),
-  height: z.coerce.number(
-    z
-      .string({
-        required_error: "Höhe wird benötigt",
-        invalid_type_error: "Höhe muss eine Zahl sein",
-      })
-      .min(1, "Höhe muss eine positive Zahl größer 0 sein")
-  ),
-  width: z.coerce.number(
-    z
-      .string({
-        required_error: "Breite wird benötigt",
-        invalid_type_error: "Breite muss eine Zahl sein",
-      })
-      .min(1, "Breite muss eine positive Zahl größer 0 sein")
-  ),
+  height: z.coerce
+    .number({
+      required_error: "Höhe wird benötigt",
+      invalid_type_error: "Höhe muss eine Zahl sein",
+    })
+    .min(1, "Höhe muss eine positive Zahl größer 0 sein")
+    .max(2048, "Höhe muss eine positive Zahl kleiner 2048 sein"),
+  width: z.coerce
+    .number({
+      required_error: "Breite wird benötigt",
+      invalid_type_error: "Breite muss eine Zahl sein",
+    })
+    .min(1, "Breite muss eine positive Zahl größer 0 sein")
+    .max(4096, "Breite muss eine positive Zahl kleiner 4096 sein"),
   events: z.array(
     z.object({
       desc: z.string({
@@ -58,4 +56,5 @@ const models = {
 
 export const { schemas: TagSchemas, $ref } = buildJsonSchemas(models, {
   $id: "TagSchema",
+  errorMessages: true,
 });

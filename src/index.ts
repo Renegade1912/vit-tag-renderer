@@ -4,7 +4,15 @@ import Fastify from "fastify";
 import tagRoutes from "./modules/tag/tag.route";
 import { TagSchemas } from "./modules/tag/tag.schema";
 
-const server = Fastify();
+const server = Fastify({
+  logger: true,
+  ajv: {
+    customOptions: {
+      allErrors: true,
+    },
+    plugins: [require("ajv-errors")],
+  },
+});
 
 const port: number = parseInt(process.env.PORT ?? "3001");
 
