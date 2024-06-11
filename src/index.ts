@@ -18,6 +18,8 @@ const main = async () => {
 
   try {
     await server.listen({ port });
+
+    console.info(`Server listening on port ${port}`);
   } catch (err) {
     server.log.error(err);
     process.exit(1);
