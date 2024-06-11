@@ -35,7 +35,7 @@ npm run start
 ## Example
 ### Request
 
-```javascript
+```bash
 curl --location 'localhost:3001/api/tag/schedule' \
 --header 'Content-Type: application/json' \
 --data '{
