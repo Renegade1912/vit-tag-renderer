@@ -36,11 +36,12 @@ export async function renderSchedule(
   let ypos = row * lineHeight;
   ctx.fillText(name, 10, ypos - (lineHeight - fontSize) / 2);
 
-  // Draw the current date dd.mm.yyyy at the end of the header
+  // Draw the current date dd.mm.yyyy at the end of the header (fill up day and month with 0 if < 10)
   const date = new Date();
-  const dateString = `${date.getDate()}.${
-    date.getMonth() + 1
-  }.${date.getFullYear()}`;
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+  const dateString = `${day}.${month}.${year}`;
   const textWidth = ctx.measureText(dateString).width;
   ctx.fillText(
     dateString,
