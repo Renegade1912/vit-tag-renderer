@@ -33,8 +33,9 @@ npm run start
 
 
 ## Example
-### Request
+### Schedule
 
+#### Request
 ```bash
 curl --location 'localhost:3001/api/tag/schedule' \
 --header 'Content-Type: application/json' \
@@ -68,5 +69,21 @@ curl --location 'localhost:3001/api/tag/schedule' \
 }'
 ```
 
-### Result: 
+#### Response
 ![Image Response Sample](./img/sample_response.jpeg)
+
+
+### Emergency 
+
+#### Request
+```bash
+curl --location 'localhost:3001/api/tag/emergency' \
+--header 'Content-Type: application/json' \
+--data '{
+    "width": "640",
+    "height": "384"
+}'
+```
+
+#### Response
+![Image Emergency Response Sample](./img/sample_emergency_response.jpeg)
