@@ -48,10 +48,29 @@ const renderTagScheduleSchema = z.object({
   ),
 });
 
+const renderEmergencyTagSchema = z.object({
+  height: z.coerce
+    .number({
+      required_error: "Höhe wird benötigt",
+      invalid_type_error: "Höhe muss eine Zahl sein",
+    })
+    .min(1, "Höhe muss eine positive Zahl größer 0 sein")
+    .max(2048, "Höhe muss eine positive Zahl kleiner 2048 sein"),
+  width: z.coerce
+    .number({
+      required_error: "Breite wird benötigt",
+      invalid_type_error: "Breite muss eine Zahl sein",
+    })
+    .min(1, "Breite muss eine positive Zahl größer 0 sein")
+    .max(4096, "Breite muss eine positive Zahl kleiner 4096 sein"),
+});
+
 export type RenderTagScheduleBody = z.infer<typeof renderTagScheduleSchema>;
+export type RenderEmergencyTagBody = z.infer<typeof renderEmergencyTagSchema>;
 
 const models = {
   renderTagScheduleSchema,
+  renderEmergencyTagSchema,
 };
 
 export const { schemas: TagSchemas, $ref } = buildJsonSchemas(models, {
