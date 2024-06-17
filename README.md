@@ -70,7 +70,24 @@ curl --location 'localhost:3001/api/tag/schedule' \
 ```
 
 #### Response
-![Image Response Sample](./img/sample_response.jpeg)
+![Image Schedule Response Sample](./img/sample_response.jpeg)
+
+
+### Not configured
+
+#### Request
+```bash
+curl --location 'localhost:3001/api/tag/configure' \
+--header 'Content-Type: application/json' \
+--data '{
+    "width": "640",
+    "height": "384"
+    "url": "localhost:3000/tag/clx4gzo2400006i73q2j3elr5"
+}'
+```
+
+#### Response
+![Image Emergency Response Sample](./img/sample_not_configured_response.jpeg)
 
 
 ### Emergency 
