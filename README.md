@@ -1,6 +1,6 @@
 # VIT Tag Renderer
 
-Small Fastify Server to generate schedule images for OpenEPaperLink tags.
+Small Fastify Server to generate schedule images for [OpenEPaperLink](https://github.com/OpenEPaperLink/OpenEPaperLink) tags.
 
 ## Getting started
 ### Prerequisites
