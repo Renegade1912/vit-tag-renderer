@@ -44,6 +44,7 @@ curl --location 'localhost:3001/api/tag/schedule' \
     "width": "640",
     "height": "384",
     "date": "11.06.2024",
+    "url": "http://localhost:3000/tag/clx4gzo2400006i73q2j3elr5",
     "events": [
         {
             "desc": "M10 - Prüfungsleistung",
