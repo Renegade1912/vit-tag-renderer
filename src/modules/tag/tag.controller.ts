@@ -3,11 +3,13 @@ import {
   RenderEmergencyTagBody,
   RenderNotConfiguredTagBody,
   RenderTagScheduleBody,
+  RenderLogoBody,
 } from "./tag.schema";
 import {
   renderEmergencyTag,
   renderNotConfiguredTag,
   renderSchedule,
+  renderLogo,
 } from "../../utils/canvas";
 
 export async function registerRenderTagScheduleHandler(
@@ -66,6 +68,25 @@ export async function registerRenderNotConfiguredTagHandler(
   try {
     // Render the not configured tag
     const imgBuffer = await renderNotConfiguredTag(height, width, url);
+
+    reply.header("Content-Type", "image/jpeg").code(201).send(imgBuffer);
+  } catch (error) {
+    console.log(error);
+    reply.code(500).send("Internal Server Error");
+  }
+}
+
+export async function registerRenderLogoHandler(
+  request: FastifyRequest<{
+    Body: RenderLogoBody;
+  }>,
+  reply: FastifyReply
+) {
+  const { height, width } = request.body;
+
+  try {
+    // Render the logo
+    const imgBuffer = await renderLogo(height, width);
 
     reply.header("Content-Type", "image/jpeg").code(201).send(imgBuffer);
   } catch (error) {

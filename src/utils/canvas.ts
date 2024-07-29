@@ -1,6 +1,7 @@
 import {
   Image,
   createCanvas,
+  loadImage,
   type Canvas,
   type CanvasRenderingContext2D,
 } from "canvas";
@@ -262,5 +263,34 @@ export async function renderEmergencyTag(
   // Return the buffer
   return canvas.toBuffer("image/jpeg", {
     quality: 1,
+  });
+}
+
+export async function renderLogo(
+  height: number,
+  width: number
+): Promise<Buffer> {
+  // Build the canvas for rendering
+  const canvas = setupCanvas(width, height, "rgba(255, 255, 255, 1)");
+  const ctx = canvas.getContext("2d");
+
+  return new Promise<Buffer>((resolve, reject) => {
+    loadImage("logo.svg")
+      .then((image) => {
+        // Draw the image in the center of the canvas
+        ctx.drawImage(
+          image,
+          (width - image.width) / 2,
+          (height - image.height) / 2
+        );
+
+        // Return the buffer
+        resolve(
+          canvas.toBuffer("image/jpeg", {
+            quality: 1,
+          })
+        );
+      })
+      .catch(reject);
   });
 }

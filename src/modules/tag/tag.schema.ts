@@ -72,8 +72,13 @@ const renderNotConfiguredTagSchema = z.object({
     .url("Die URL ist ungültig"),
 });
 
+const renderLogoSchema = z.object({
+  ...tagCore,
+});
+
 export type RenderTagScheduleBody = z.infer<typeof renderTagScheduleSchema>;
 export type RenderEmergencyTagBody = z.infer<typeof renderEmergencyTagSchema>;
+export type RenderLogoBody = z.infer<typeof renderLogoSchema>;
 export type RenderNotConfiguredTagBody = z.infer<
   typeof renderNotConfiguredTagSchema
 >;
@@ -82,6 +87,7 @@ const models = {
   renderTagScheduleSchema,
   renderEmergencyTagSchema,
   renderNotConfiguredTagSchema,
+  renderLogoSchema,
 };
 
 export const { schemas: TagSchemas, $ref } = buildJsonSchemas(models, {

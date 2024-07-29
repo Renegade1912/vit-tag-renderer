@@ -3,6 +3,7 @@ import {
   registerRenderEmergencyTagHandler,
   registerRenderNotConfiguredTagHandler,
   registerRenderTagScheduleHandler,
+  registerRenderLogoHandler,
 } from "./tag.controller";
 import { $ref } from "./tag.schema";
 
@@ -35,6 +36,16 @@ async function tagRoutes(server: FastifyInstance) {
       },
     },
     registerRenderNotConfiguredTagHandler
+  );
+
+  server.post(
+    "/logo",
+    {
+      schema: {
+        body: $ref("renderLogoSchema"),
+      },
+    },
+    registerRenderLogoHandler
   );
 }
 
